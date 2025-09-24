@@ -5,20 +5,8 @@ import logging
 import pandas as pd
 import sys
 
-def setup_logging():
-    """Configura o sistema de logging para o projeto."""
-    log_dir = Path('logs')
-    log_dir.mkdir(exist_ok=True)
-    log_file = log_dir / 'download.log'
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_file, encoding='utf-8'),
-            logging.StreamHandler(sys.stdout)
-        ]
-    )
+# Importa a função de configuração de log do novo módulo
+from log_utils import setup_logging
 
 def main():
     """
@@ -26,7 +14,7 @@ def main():
     e salvá-los em arquivos Excel por ano.
     """
     # Configura o sistema de logging
-    setup_logging()
+    setup_logging('download.log')
     
     # Obtém o ano atual e define o ano inicial para a coleta
     current_year = datetime.datetime.now().year

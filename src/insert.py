@@ -59,7 +59,7 @@ def main():
         logger.info(f"Erro: O arquivo '{arquivo_consolidado.name}' não foi encontrado na pasta '{PASTA_ARQUIVOS}'.")
     else:
         try:
-            logger.info(f"\nProcessando o arquivo: {arquivo_consolidado.name}")
+            logger.info(f"Processando o arquivo: {arquivo_consolidado.name}")
             
             # Lê o arquivo Excel completo para um DataFrame do pandas
             df = pd.read_excel(arquivo_consolidado)

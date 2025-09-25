@@ -4,11 +4,16 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 from dotenv import load_dotenv
+import logging 
+from log_utils import setup_logging
 
 def main():
 # Carrega as variáveis de ambiente do arquivo .env
     load_dotenv()
 
+    logger = logging.getLogger(__name__)
+
+    setup_logging('insert.log')
 
     # --- Configurações do Banco de Dados (usando variáveis de ambiente) ---
     DB_HOST = os.getenv("DB_HOST")
@@ -27,7 +32,7 @@ def main():
     # Define o nome da tabela de destino no banco de dados
     TABELA_DESTINO = "dados_ppm"
 
-    print("Iniciando o processo de ETL (Extrair, Transformar, Carregar)...")
+    logger.info("Iniciando o processo de ETL (Extrair, Transformar, Carregar)...")
 
 
     # 1. Configura a conexão com o PostgreSQL
@@ -41,9 +46,9 @@ def main():
             database=DB_NAME,
         )
         engine = create_engine(url_object)
-        print("Conexão com o banco de dados estabelecida com sucesso!")
+        logger.info("Conexão com o banco de dados estabelecida com sucesso!")
     except Exception as e:
-        print(f"Erro ao conectar ao banco de dados: {e}")
+        logger.error(f"Erro ao conectar ao banco de dados: {e}")
         # Encerra o script em caso de erro fatal de conexão
         exit()
 
@@ -51,10 +56,10 @@ def main():
     arquivo_consolidado = PASTA_ARQUIVOS / "PPM_RO_FINAL.xlsx"
 
     if not arquivo_consolidado.exists():
-        print(f"Erro: O arquivo '{arquivo_consolidado.name}' não foi encontrado na pasta '{PASTA_ARQUIVOS}'.")
+        logger.info(f"Erro: O arquivo '{arquivo_consolidado.name}' não foi encontrado na pasta '{PASTA_ARQUIVOS}'.")
     else:
         try:
-            print(f"\nProcessando o arquivo: {arquivo_consolidado.name}")
+            logger.info(f"\nProcessando o arquivo: {arquivo_consolidado.name}")
             
             # Lê o arquivo Excel completo para um DataFrame do pandas
             df = pd.read_excel(arquivo_consolidado)
@@ -87,7 +92,7 @@ def main():
             # Por exemplo, conversão de tipos, limpeza de valores, etc.
 
             if not df.empty:
-                print(f"{len(df)} linhas prontas para serem carregadas.")
+                logger.info(f"{len(df)} linhas prontas para serem carregadas.")
                 
                 # 4. Salva os dados no banco de dados
                 df.to_sql(
@@ -96,14 +101,14 @@ def main():
                     if_exists='append', # Adiciona os dados à tabela existente
                     index=False # Não salva o índice do DataFrame como uma coluna
                 )
-                print(f"Dados do arquivo '{arquivo_consolidado.name}' salvos na tabela '{TABELA_DESTINO}' com sucesso.")
+                logger.info(f"Dados do arquivo '{arquivo_consolidado.name}' salvos na tabela '{TABELA_DESTINO}' com sucesso.")
             else:
-                print(f"Nenhuma linha encontrada no arquivo {arquivo_consolidado.name}.")
+                logger.info(f"Nenhuma linha encontrada no arquivo {arquivo_consolidado.name}.")
                 
         except Exception as e:
-            print(f"Erro ao processar o arquivo {arquivo_consolidado.name}: {e}")
+            logger.error(f"Erro ao processar o arquivo {arquivo_consolidado.name}: {e}")
 
-    print("\nProcessamento finalizado.")
+    logger.info("\nProcessamento finalizado.")
 
 if __name__ == "__main__":
     main()

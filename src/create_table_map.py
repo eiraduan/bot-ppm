@@ -2,10 +2,16 @@ import os
 import pandas as pd
 import psycopg2
 from dotenv import load_dotenv
+import logging 
+from log_utils import setup_logging
 
 def main():
     # --- Carrega as variáveis de ambiente do arquivo .env ---
     load_dotenv()
+
+    logger = logging.getLogger(__name__)
+
+    setup_logging('insert.log')
 
     # --- Configurações do Banco de Dados usando variáveis de ambiente ---
     host = os.getenv("DB_HOST")
@@ -15,7 +21,7 @@ def main():
     password = os.getenv("DB_PASSWORD")
 
     try:
-        print("Tentando estabelecer a conexão com o banco de dados...")
+        logger.info("Tentando estabelecer a conexão com o banco de dados...")
         conexao = psycopg2.connect(
             host=host,
             port=port,
@@ -23,12 +29,12 @@ def main():
             user=user,
             password=password
         )
-        print("Conexão estabelecida com sucesso!")
+        logger.info("Conexão estabelecida com sucesso!")
         
         cursor = conexao.cursor()
 
         # --- Criação da Tabela (com verificação para evitar erros) ---
-        print("Verificando e criando a tabela 'dados_ppm_mapa' se ela não existir...")
+        logger.info("Verificando e criando a tabela 'dados_ppm_mapa' se ela não existir...")
         
         # Adiciona a verificação "IF NOT EXISTS" para evitar erros se a tabela já existir
         create_table_query = """
@@ -62,16 +68,16 @@ def main():
         cursor.execute(create_table_query)
         
         conexao.commit()
-        print("Tabela 'dados_ppm_mapa' verificada/criada com sucesso.")
+        logger.info("Tabela 'dados_ppm_mapa' verificada/criada com sucesso.")
 
     except Exception as e:
-        print(f"Erro: {e}")
+        logger.error(f"Erro: {e}")
 
     finally:
         if 'conexao' in locals() and conexao:
             cursor.close()
             conexao.close()
-            print("Conexão com o banco de dados fechada.")
+            logger.info("Conexão com o banco de dados fechada.")
 
 if __name__ == "__main__":
     main()

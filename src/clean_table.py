@@ -33,7 +33,7 @@ def main():
         # Adiciona a verificação "IF NOT EXISTS" para evitar erros se a tabela já existir
         clean_table = """
         TRUNCATE TABLE gisdb.gisadmin.dados_ppm RESTART IDENTITY;
-        DROP TABLE gisdb.gisadmin.dados_pam_mapa;
+        DROP TABLE gisdb.gisadmin.dados_ppm_mapa;
         """
         cursor.execute(clean_table)
         

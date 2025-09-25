@@ -9,8 +9,6 @@ def main():
     # --- Carrega as variáveis de ambiente do arquivo .env ---
     load_dotenv()
 
-    logger = logging.getLogger(__name__)
-
     setup_logging('clean_table.log')
 
     # --- Configurações do Banco de Dados usando variáveis de ambiente ---
@@ -21,7 +19,7 @@ def main():
     password = os.getenv("DB_PASSWORD")
 
     try:
-        logger.info("Tentando estabelecer a conexão com o banco de dados...")
+        logging.info("Tentando estabelecer a conexão com o banco de dados...")
         conexao = psycopg2.connect(
             host=host,
             port=port,
@@ -29,12 +27,12 @@ def main():
             user=user,
             password=password
         )
-        logger.info("Conexão estabelecida com sucesso!")
+        logging.info("Conexão estabelecida com sucesso!")
         
         cursor = conexao.cursor()
 
         # --- Criação da Tabela (com verificação para evitar erros) ---
-        logger.info("Verificando e criando a tabela 'dados_ppm' se ela não existir...")
+        logging.info("Verificando e criando a tabela 'dados_ppm' se ela não existir...")
         
         # Adiciona a verificação "IF NOT EXISTS" para evitar erros se a tabela já existir
         clean_table = """
@@ -44,16 +42,16 @@ def main():
         cursor.execute(clean_table)
         
         conexao.commit()
-        logger.info("Tabela 'dados_ppm' TRUNCATE com sucesso.")
+        logging.info("Tabela 'dados_ppm' TRUNCATE com sucesso.")
 
     except Exception as e:
-        logger.error(f"Erro: {e}")
+        logging.error(f"Erro: {e}")
 
     finally:
         if 'conexao' in locals() and conexao:
             cursor.close()
             conexao.close()
-            logger.info("Conexão com o banco de dados fechada.")
+            logging.info("Conexão com o banco de dados fechada.")
 
 if __name__ == "__main__":
     main()

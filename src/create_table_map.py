@@ -21,7 +21,7 @@ def main():
     password = os.getenv("DB_PASSWORD")
 
     try:
-        logger.info("Tentando estabelecer a conexão com o banco de dados...")
+        logging.info("Tentando estabelecer a conexão com o banco de dados...")
         conexao = psycopg2.connect(
             host=host,
             port=port,
@@ -29,12 +29,12 @@ def main():
             user=user,
             password=password
         )
-        logger.info("Conexão estabelecida com sucesso!")
+        logging.info("Conexão estabelecida com sucesso!")
         
         cursor = conexao.cursor()
 
         # --- Criação da Tabela (com verificação para evitar erros) ---
-        logger.info("Verificando e criando a tabela 'dados_ppm_mapa' se ela não existir...")
+        logging.info("Verificando e criando a tabela 'dados_ppm_mapa' se ela não existir...")
         
         # Adiciona a verificação "IF NOT EXISTS" para evitar erros se a tabela já existir
         create_table_query = """
@@ -68,16 +68,16 @@ def main():
         cursor.execute(create_table_query)
         
         conexao.commit()
-        logger.info("Tabela 'dados_ppm_mapa' verificada/criada com sucesso.")
+        logging.info("Tabela 'dados_ppm_mapa' verificada/criada com sucesso.")
 
     except Exception as e:
-        logger.error(f"Erro: {e}")
+        logging.error(f"Erro: {e}")
 
     finally:
         if 'conexao' in locals() and conexao:
             cursor.close()
             conexao.close()
-            logger.info("Conexão com o banco de dados fechada.")
+            logging.info("Conexão com o banco de dados fechada.")
 
 if __name__ == "__main__":
     main()

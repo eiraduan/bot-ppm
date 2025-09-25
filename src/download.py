@@ -67,7 +67,7 @@ def main():
             df = df.iloc[1:, :]
 
             # Define o caminho completo para o arquivo de saída
-            file_name = f"PPM_RO_{year}.xlsx"
+            file_name = f"PPM_RO_EFETIVO_REBANHOS_{year}.xlsx"
             full_path = data_dir / file_name
             
             # Salva o DataFrame em um arquivo Excel

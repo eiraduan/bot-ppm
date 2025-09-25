@@ -32,17 +32,17 @@ def main():
         cursor = conexao.cursor()
 
         # --- Criação da Tabela (com verificação para evitar erros) ---
-        logger.info("Verificando e criando a tabela 'dados_ppm' se ela não existir...")
+        logger.info("Verificando e criando a tabela 'dados_ppm_efetivo_rebanhos' se ela não existir...")
         
         # Adiciona a verificação "IF NOT EXISTS" para evitar erros se a tabela já existir
         clean_table = """
-        TRUNCATE TABLE gisdb.gisadmin.dados_ppm RESTART IDENTITY;
-        DROP TABLE gisdb.gisadmin.dados_ppm_mapa;
+        TRUNCATE TABLE gisdb.gisadmin.dados_ppm_efetivo_rebanhos RESTART IDENTITY;
+        DROP TABLE gisdb.gisadmin.mapa_ppm_efetivo_rebanhos;
         """
         cursor.execute(clean_table)
         
         conexao.commit()
-        logger.info("Tabela 'dados_ppm' TRUNCATE com sucesso.")
+        logger.info("Tabela 'dados_ppm_efetivo_rebanhos' TRUNCATE com sucesso.")
 
     except Exception as e:
         logger.error(f"Erro: {e}")

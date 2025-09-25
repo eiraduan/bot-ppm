@@ -15,7 +15,7 @@ def juntar_arquivos_excel(pasta_origem: Path):
     logger = logging.getLogger(__name__)
 
     # 1. Define o caminho do arquivo de saída
-    nome_arquivo_saida = "PPM_RO_FINAL.xlsx"
+    nome_arquivo_saida = "PPM_RO_EFETIVO_REBANHOS_FINAL.xlsx"
     caminho_completo_saida = pasta_origem / nome_arquivo_saida
     
     # 2. Verifica se o arquivo final existe e o apaga para evitar duplicações
@@ -31,7 +31,7 @@ def juntar_arquivos_excel(pasta_origem: Path):
     # A verificação 'if arquivo.name != nome_arquivo_saida' garante que
     # o arquivo de saída (se por algum motivo não for apagado) não será lido.
     arquivos_excel = sorted([
-        arquivo for arquivo in pasta_origem.glob("PPM_RO_*.xlsx") 
+        arquivo for arquivo in pasta_origem.glob("PPM_RO_EFETIVO_REBANHOS_*.xlsx") 
         if arquivo.name != nome_arquivo_saida
     ])
 

@@ -27,7 +27,7 @@ def main():
     PASTA_ARQUIVOS = DIRETORIO_SCRIPT.parent / "files"
 
     # Define o nome da tabela de destino no banco de dados
-    TABELA_DESTINO = "dados_ppm"
+    TABELA_DESTINO = "dados_ppm_efetivo_rebanhos"
 
     logger.info("Iniciando o processo de ETL (Extrair, Transformar, Carregar)...")
 
@@ -50,7 +50,7 @@ def main():
         exit()
 
     # 2. Processa o arquivo consolidado
-    arquivo_consolidado = PASTA_ARQUIVOS / "PPM_RO_FINAL.xlsx"
+    arquivo_consolidado = PASTA_ARQUIVOS / "PPM_RO_EFETIVO_REBANHOS_FINAL.xlsx"
 
     if not arquivo_consolidado.exists():
         logger.info(f"Erro: O arquivo '{arquivo_consolidado.name}' não foi encontrado na pasta '{PASTA_ARQUIVOS}'.")

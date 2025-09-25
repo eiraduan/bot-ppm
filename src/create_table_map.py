@@ -11,7 +11,7 @@ def main():
 
     logger = logging.getLogger(__name__)
 
-    setup_logging('insert.log')
+    setup_logging('create_table_map.log')
 
     # --- Configurações do Banco de Dados usando variáveis de ambiente ---
     host = os.getenv("DB_HOST")

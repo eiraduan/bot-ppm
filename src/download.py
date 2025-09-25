@@ -6,7 +6,6 @@ import pandas as pd
 import sys
 
 # Importa a função de configuração de log do novo módulo
-from log_utils import setup_logging
 
 def main():
     """
@@ -14,8 +13,8 @@ def main():
     e salvá-los em arquivos Excel por ano.
     """
     # Configura o sistema de logging
-    setup_logging('download.log')
-    
+    logger = logging.getLogger(__name__)
+
     # Obtém o ano atual e define o ano inicial para a coleta
     current_year = datetime.datetime.now().year
     first_year = 2019
@@ -26,8 +25,8 @@ def main():
     data_dir = project_dir / "files"
     data_dir.mkdir(parents=True, exist_ok=True)
     
-    logging.info(f"Pasta de dados criada ou já existente em: {data_dir}")
-    logging.info("Iniciando o processo de download de arquivos anuais da Pesquisa da Pecuária Municipal (PPM)")
+    logger.info(f"Pasta de dados criada ou já existente em: {data_dir}")
+    logger.info("Iniciando o processo de download de arquivos anuais da Pesquisa da Pecuária Municipal (PPM)")
     
     # Códigos de municípios do estado de Rondônia (RO)
     municipality_codes_ro = [
@@ -48,7 +47,7 @@ def main():
     # Loop para baixar dados anuais, começando do ano inicial até o ano atual
     for year in range(first_year, current_year + 1):
         try:
-            logging.info(f"Iniciando download para o ano: {year}")
+            logger.info(f"Iniciando download para o ano: {year}")
             
             # Baixa os dados da tabela 3939 do SIDRA (IBGE)
             sidra_data = sidrapy.get_table(
@@ -74,10 +73,10 @@ def main():
             # Salva o DataFrame em um arquivo Excel
             df.to_excel(full_path, index=False)
             
-            logging.info(f"Arquivo '{file_name}' gerado com sucesso em: {full_path}")
+            logger.info(f"Arquivo '{file_name}' gerado com sucesso em: {full_path}")
             
         except Exception as e:
-            logging.error(f"Ocorreu um erro ao gerar o arquivo Excel para o ano {year}: {e}")
+            logger.error(f"Ocorreu um erro ao gerar o arquivo Excel para o ano {year}: {e}")
 
 if __name__ == '__main__':
     main()

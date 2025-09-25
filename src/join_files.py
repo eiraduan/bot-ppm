@@ -3,8 +3,6 @@ from pathlib import Path
 import logging
 import sys
 
-# Importa a função de configuração de log do novo módulo
-from log_utils import setup_logging
 
 def juntar_arquivos_excel(pasta_origem: Path):
     """
@@ -65,8 +63,6 @@ def main():
     """
     Função principal para executar a união dos arquivos.
     """
-    # A configuração do logging é chamada aqui, passando o nome do arquivo de log
-    setup_logging('join_files.log')
     
     diretorio_script = Path(__file__).parent
     pasta_origem_dados = diretorio_script.parent / "files"

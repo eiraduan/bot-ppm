@@ -7,10 +7,10 @@ import join_files
 from pathlib import Path
 
 def setup_master_logging(log_file='processo_completo.log'):
-  
     project_dir = Path(__file__).resolve().parent.parent
     log_dir = project_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
+
     log_path = log_dir / log_file
 
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
